@@ -134,6 +134,8 @@ Summary: The Linux kernel
 %define with_bootwrapper %{?_without_bootwrapper: 0} %{?!_without_bootwrapper: 1}
 # Want to build a the vsdo directories installed
 %define with_vdso_install %{?_without_vdso_install: 0} %{?!_without_vdso_install: 1}
+# kernel-kirkwood (only valid for arm)
+%define with_kirkwood       %{?_without_kirkwood:       0} %{?!_without_kirkwood:       1}
 #
 # Additional options for user-friendly one-off kernel building:
 #
@@ -248,6 +250,11 @@ Summary: The Linux kernel
 # kernel PAE is only built on i686 and ARMv7.
 %ifnarch i686 armv7hl
 %define with_pae 0
+%endif
+
+# kernel-kirkwood is only built for armv5
+%ifnarch armv5tel
+%define with_kirkwood 0
 %endif
 
 # if requested, only build base kernel
@@ -386,7 +393,10 @@ Summary: The Linux kernel
 %define kernel_mflags KALLSYMS_EXTRA_PASS=1
 # we only build headers/perf/tools on the base arm arches
 # just like we used to only build them on i386 for x86
-%ifnarch armv7hl
+%ifarch armv5tel
+%define with_up 0
+%endif
+%ifnarch armv5tel armv7hl
 %define with_headers 0
 %define with_perf 0
 %define with_tools 0
@@ -563,6 +573,9 @@ Source102: config-armv7
 Source103: config-armv7-lpae
 
 Source110: config-arm64
+
+# Legacy ARM kernels
+Source120: config-arm-kirkwood
 
 # This file is intentionally left empty in the stock kernel. Its a nicety
 # added for those wanting to do custom rebuilds with altered config opts.
@@ -1064,6 +1077,12 @@ input and output, etc.
 This variant of the kernel has numerous debugging options enabled.
 It should only be installed when trying to gather additional information
 on kernel bugs, as some of these options impact performance noticably.
+
+%define variant_summary The Linux kernel compiled for marvell kirkwood boards
+%kernel_variant_package kirkwood
+%description kirkwood
+This package includes a version of the Linux kernel with support for
+marvell kirkwood based systems, i.e., guruplug, sheevaplug
 
 
 %prep
@@ -1860,6 +1879,10 @@ BuildKernel %make_target %kernel_image %{pae}debug
 BuildKernel %make_target %kernel_image %{pae}
 %endif
 
+%if %{with_kirkwood}
+BuildKernel %make_target %kernel_image kirkwood
+%endif
+
 %if %{with_up}
 BuildKernel %make_target %kernel_image
 %endif
@@ -2314,6 +2337,7 @@ fi
 %kernel_variant_files %{with_debug} debug
 %kernel_variant_files %{with_pae} %{pae}
 %kernel_variant_files %{with_pae_debug} %{pae}debug
+%kernel_variant_files %{with_kirkwood} kirkwood
 
 # plz don't put in a version string unless you're going to tag
 # and build.
