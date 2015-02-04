@@ -642,7 +642,6 @@ Patch470: die-floppy-die.patch
 Patch500: Revert-Revert-ACPI-video-change-acpi-video-brightnes.patch
 
 Patch510: silence-noise.patch
-Patch530: silence-fbcon-logo.patch
 
 Patch600: 0001-lib-cpumask-Make-CPUMASK_OFFSTACK-usable-without-deb.patch
 
@@ -1394,9 +1393,6 @@ ApplyPatch no-pcspkr-modalias.patch
 
 # Silence some useless messages that still get printed with 'quiet'
 ApplyPatch silence-noise.patch
-
-# Make fbcon not show the penguins with 'quiet'
-ApplyPatch silence-fbcon-logo.patch
 
 # Changes to upstream defaults.
 
