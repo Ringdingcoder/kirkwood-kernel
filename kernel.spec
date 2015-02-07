@@ -2188,6 +2188,9 @@ fi}\
 %kernel_variant_preun debug
 %kernel_variant_post -v debug
 
+%kernel_variant_preun kirkwood
+%kernel_variant_post -v kirkwood
+
 if [ -x /sbin/ldconfig ]
 then
     /sbin/ldconfig -X || exit $?
