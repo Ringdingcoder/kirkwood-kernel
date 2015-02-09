@@ -1280,10 +1280,12 @@ else
 
 fi
 
-# Now build the fedora kernel tree.
-cp -rl vanilla-%{vanillaversion} linux-%{KVERREL}
+%define MYBUILDDIR mine-%{version}
 
-cd linux-%{KVERREL}
+# Now build the fedora kernel tree.
+cp -rl vanilla-%{vanillaversion} linux-%{MYBUILDDIR}
+
+cd linux-%{MYBUILDDIR}
 
 # released_kernel with possible stable updates
 %if 0%{?stable_base}
@@ -1861,7 +1863,7 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/boot
 mkdir -p $RPM_BUILD_ROOT%{_libexecdir}
 
-cd linux-%{KVERREL}
+cd linux-%{MYBUILDDIR}
 
 %if %{with_debug}
 BuildKernel %make_target %kernel_image debug
@@ -2000,7 +2002,7 @@ find Documentation -type d | xargs chmod u+w
 
 %install
 
-cd linux-%{KVERREL}
+cd linux-%{MYBUILDDIR}
 
 %if %{with_doc}
 docdir=$RPM_BUILD_ROOT%{_datadir}/doc/kernel-doc-%{rpmversion}
@@ -2230,7 +2232,7 @@ fi
 %{_libexecdir}/perf-core/*
 %{_mandir}/man[1-8]/perf*
 %{_sysconfdir}/bash_completion.d/perf
-%doc linux-%{KVERREL}/tools/perf/Documentation/examples.txt
+%doc linux-%{MYBUILDDIR}/tools/perf/Documentation/examples.txt
 
 %files -n python-perf
 %defattr(-,root,root)
