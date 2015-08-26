@@ -696,6 +696,7 @@ Patch21242: criu-no-expert.patch
 
 #rhbz 892811
 Patch21247: ath9k_rx_dma_stop_check.patch
+Patch21555: marvell-net-backout.patch
 
 Patch22000: weird-root-dentry-name-debug.patch
 
@@ -1442,6 +1443,7 @@ ApplyPatch criu-no-expert.patch
 
 #rhbz 892811
 ApplyPatch ath9k_rx_dma_stop_check.patch
+ApplyPatch marvell-net-backout.patch
 
 #rhbz 1025603
 ApplyPatch disable-libdw-unwind-on-non-x86.patch
